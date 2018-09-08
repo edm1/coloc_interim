@@ -90,7 +90,7 @@ def make_commands(row):
 
     # Temp dir
     out_tmp = os.path.abspath(
-        args['tmp_dir'] + '/coloc_wrapper/{study_id}'.format(
+        args['tmp_dir'] + '/coloc_wrapper/{study_id}/'.format(
             study_id=row.stid))
 
     # Make command

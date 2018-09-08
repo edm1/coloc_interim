@@ -1,24 +1,22 @@
-Finemapping molecular traits (prelim)
+Colocalisation (interim solution)
 =====================================
 
-Finemapping pipeline for molecular traits
+Interim solution for colocalisation
 
 ### Usage
 
 ```
 # Install dependencies into isolated environment
-conda env create -n finemapping_mt --file environment.yaml
+conda env create -n coloc --file environment.yaml
 
 # Activate environment
-source activate finemapping_mt
+source activate coloc
 
 # Alter configuration file
 nano configs/config.yaml
 
 # Execute workflow (locally)
-snakemake -p define_loci
-snakemake -p finemap_loci
+bash 1_get_input_data.sh
+python 2_make_commands.py
 
-# Execute workflow (on Sanger farm)
-bsub < bsub_wrapper.sh
 ```
