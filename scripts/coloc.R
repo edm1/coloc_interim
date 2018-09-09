@@ -6,9 +6,10 @@ library("coloc")
 
 # Options
 if (interactive()) {
-  in_left_ss = "tmp/coloc_wrapper/NEALEUKB_23112/left_ss.tsv"
-  in_right_ss = "tmp/coloc_wrapper/NEALEUKB_23112/right_ss.tsv"
-  outpref = "tmp/coloc_wrapper/NEALEUKB_23112/coloc"
+  setwd('/Users/ed/Work/coloc_interim')
+  in_left_ss = "tmp/coloc_180908/NEALEUKB_23112/22_18215952_G_C/gtex_v7/UBERON_0004264/ENSG00000015475/left_ss.tsv.gz"
+  in_right_ss = "tmp/coloc_180908/NEALEUKB_23112/22_18215952_G_C/gtex_v7/UBERON_0004264/ENSG00000015475/right_ss.tsv.gz"
+  outpref = "tmp/coloc_180908/NEALEUKB_23112/22_18215952_G_C/gtex_v7/UBERON_0004264/ENSG00000015475/coloc"
 } else {
   args = commandArgs(trailingOnly=TRUE)
   in_left_ss = args[1]
@@ -69,6 +70,6 @@ write_tsv(coloc_full, out_f, col_names=T)
 # Plot
 plot_data = rbind(left_ss[, c('pos_b37', 'pval', 'side')],
                   right_ss[, c('pos_b37', 'pval', 'side')])
-p = ggplot(plot_data, aes(x=pos_b37, y=-log10(pval), colour=side)) + geom_point()
+p = ggplot(plot_data, aes(x=pos_b37, y=-log10(pval), colour=side)) + geom_point(alpha=0.5, size=1)
 out_f = paste0(outpref, '.plot.png')
 ggsave(p, file=out_f, w=12, h=8, units='cm', dpi=150)

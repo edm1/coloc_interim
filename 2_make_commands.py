@@ -22,7 +22,6 @@ def main():
     args['eqtl'] = 'input_data/molecular_qtl/eqtl/GTEX7/{tissue}/{biomarker}/{chrom}-GTEX7-{tissue}-{biomarker}.tsv.gz'
     args['pqtl'] = 'input_data/molecular_qtl/pqtl/SUN2018/{tissue}/{biomarker}/{chrom}-SUN2018-{tissue}-{biomarker}.tsv.gz'
     args['out_pref'] = 'tmp/coloc_180908/{study_id}/{variant_id}/{source_id}/{tissue}/{biomarker}'
-    # args['out_pref'] = 'output/coloc_180908/{study_id}/{study_id}-{variant_id}-{source_id}-{tissue}-{biomarker}'
     # Coloc args
     args['coloc_window_kb'] = 500
     # Other args
@@ -92,11 +91,6 @@ def make_commands(row):
     else:
         sys.exit('Error: source_id {0} not recognised'.format(row.source_id))
 
-    # Temp dir
-    # out_tmp = os.path.abspath(
-    #     args['tmp_dir'] + '/coloc_wrapper/{study_id}/'.format(
-    #         study_id=row.stid))
-
     # Make command
     cmd = [
         'python',
@@ -107,7 +101,6 @@ def make_commands(row):
         '--outpref', outf,
         '--pos', row.pos,
         '--window_kb', args['coloc_window_kb']
-        # '--tmpdir', out_tmp
     ]
 
     return ' '.join([str(x) for x in cmd])

@@ -24,7 +24,6 @@ def main():
         assert os.path.exists(inf)
 
     # Make temp and output dirs
-    # os.makedirs(args.tmpdir, exist_ok=True)
     os.makedirs(args.outpref, exist_ok=True)
 
     # Start log
@@ -234,14 +233,12 @@ def parse_args():
     parser.add_argument('--bgen', metavar="<file>", help=('BGEN input file'), type=str, required=True)
     # Output args
     parser.add_argument('--outpref', metavar="<str>", help=("Output prefix"), type=str, required=True)
-    # parser.add_argument('--tmpdir', metavar="<str>", help=("Temporary dir"), type=str, required=True)
     # Coloc args
     parser.add_argument('--pos', metavar="<int>", help=('Genomic position of index variant'), type=int, required=True)
     parser.add_argument('--window_kb', metavar="<int>", help=('Plus/minus window (kb) to perform coloc on'), type=int, required=True)
     parser.add_argument('--vloc', help=('Run Zuber et al coloc method'), action='store_true')
 
     args = parser.parse_args()
-
 
     return args
 
