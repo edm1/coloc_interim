@@ -13,6 +13,9 @@ instance_zone="europe-west1-d"
 bash 3_run_commands.sh
 python 4_collate_results.py
 
+# Tar the tmp dir
+tar -czvf output/coloc_interim_tempdir_180908.tar.gz tmp
+
 # Shutdown instance
 gcloud compute instances stop $instance_name --zone=$instance_zone
 
