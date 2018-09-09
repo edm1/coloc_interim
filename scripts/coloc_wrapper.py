@@ -28,6 +28,7 @@ def main():
                         level=logging.INFO)
     logging.info('Started')
     logging.info(sys.argv)
+    logging.info(' '.join(sys.argv))
 
     # Check inputs exist
     infs = [args.left_sumstats, args.right_sumstats]
