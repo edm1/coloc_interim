@@ -8,6 +8,8 @@ set -euo pipefail
 cores=4
 in_commands=tmp/commands.txt.gz
 
+echo START...
+
 zcat < $in_commands | head -10 | while read cmd
 do
     # Parse outfiles
