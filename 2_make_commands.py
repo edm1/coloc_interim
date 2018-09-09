@@ -32,7 +32,7 @@ def main():
 
     # Load manifest
     mani = load_manifest()
-    mani = mani.loc[mani.chrom == '22', :].head(1) # DEBUG
+    # mani = mani.loc[mani.chrom == '22', :].head(1) # DEBUG
     mani.to_csv(args['tmp_dir'] + '/manifest_merged.tsv.gz', sep='\t',
                 index=None, compression='gzip')
 
