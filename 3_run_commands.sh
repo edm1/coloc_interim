@@ -6,7 +6,7 @@
 set -euo pipefail
 
 # Args
-cores=96
+cores=64
 in_commands=tmp/commands.txt.gz
 
 echo START...
