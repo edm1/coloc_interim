@@ -52,7 +52,7 @@ right_data = list(
 # Run coloc
 coloc_res = coloc.abf(left_data, right_data,
                      MAF=left_ss$maf,
-                     p1=1e-03, p2=1e-03, p12 = 1e-05)
+                     p1=1e-04, p2=1e-04, p12 = 1e-05)
 
 # Output coloc result
 coloc_summ = data.frame(coloc_res$summary)

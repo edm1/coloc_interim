@@ -5,12 +5,13 @@
 
 set -euo pipefail
 
-cores=4
+# Args
+cores=96
 in_commands=tmp/commands.txt.gz
 
 echo START...
 
-zcat < $in_commands | head -1000 | while read cmd
+zcat < $in_commands | while read cmd
 do
     # Parse outfiles
     outfile=$(echo $cmd | cut -f 10 -d " ")/COMPLETE
