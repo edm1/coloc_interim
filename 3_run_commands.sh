@@ -10,7 +10,7 @@ in_commands=tmp/commands.txt.gz
 
 echo START...
 
-zcat < $in_commands | head -10 | while read cmd
+zcat < $in_commands | head -1000 | while read cmd
 do
     # Parse outfiles
     outfile=$(echo $cmd | cut -f 10 -d " ")/COMPLETE
