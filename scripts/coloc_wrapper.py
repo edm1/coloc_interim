@@ -16,13 +16,6 @@ def main():
     global args
     args = parse_args()
 
-    # Check inputs exist
-    infs = [args.left_sumstats, args.right_sumstats]
-    if args.vloc:
-        infs.append(args.bgen)
-    for inf in infs:
-        assert os.path.exists(inf)
-
     # Make temp and output dirs
     os.makedirs(args.outpref, exist_ok=True)
 
@@ -35,6 +28,15 @@ def main():
                         level=logging.INFO)
     logging.info('Started')
     logging.info(sys.argv)
+
+    # Check inputs exist
+    infs = [args.left_sumstats, args.right_sumstats]
+    if args.vloc:
+        infs.append(args.bgen)
+    for inf in infs:
+        if not os.path.exists(inf):
+            logging.info('Input file not found: {0}'.format(inf))
+            sys.exit()
 
     #
     # Prepare sumstat files ----------------------------------------------------
@@ -101,7 +103,10 @@ def main():
               outpref)
 
     # Check output exists
-    assert os.path.exists(outpref + '.pp.tsv')
+    outf = os.path.exists(outpref + '.pp.tsv')
+    if not os.path.exists(outf):
+        logging.info('Output file not found: {0}'.format(outf))
+        sys.exit()
 
     # Touch COMPLETE
     touch(args.outpref + '/COMPLETE')

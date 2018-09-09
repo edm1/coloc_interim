@@ -35,10 +35,11 @@ sudo apt-get -y install libssl-dev
 # Install LDstore
 
 # Bin
-mkdir -p ~/bin
-cd ~/bin
+cd ..
+mkdir -p bin
+cd bin
 ln -s ../software/parallel-20180722/src/parallel
-echo export PATH="$HOME/bin:\$PATH" >> ~/.profile
+echo export PATH="$PWD:\$PATH" >> ~/.profile
 . ~/.profile
 
 echo COMPLETE
