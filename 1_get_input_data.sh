@@ -7,7 +7,7 @@ mkdir -p input_data
 
 # Download manifest
 mkdir -p configs
-gsutil cp n gs://uk_biobank_analysis/em21/coloc_manifest.csv.gz configs/coloc_manifest_180908.csv.gz
+gsutil cp -n gs://uk_biobank_analysis/em21/coloc_manifest.csv.gz configs/coloc_manifest_180908.csv.gz
 
 # Download molecular qtl summary stats
 mkdir -p input_data/molecular_qtl

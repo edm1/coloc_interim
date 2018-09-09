@@ -21,7 +21,10 @@ tar xvjf parallel-20180722.tar.bz2
 
 # Install R
 sudo apt-get update
-sudo apt install r-base-core
+sudo apt-get -y install r-base-core
+sudo apt-get -y install libxml2-dev
+sudo apt-get -y install libcurl4-openssl-dev
+sudo apt-get -y install libssl-dev
 
 # Install coloc - Need to open R and run these commands
 # source("https://bioconductor.org/biocLite.R")
