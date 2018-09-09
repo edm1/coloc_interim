@@ -12,7 +12,7 @@ def main():
     global args
     args = {}
     # Input args
-    args['in_mani'] = 'configs/coloc_manifest_180908.csv'
+    args['in_mani'] = 'configs/coloc_manifest_180908.csv.gz'
     args['in_prot_map'] = 'configs/Sun_pQTL_SOMALOGIC_GWAS_protein_info.ensembl.manifest.tsv'
     args['in_tissue_map'] = 'configs/tissue_codes.tsv'
     # File patterns
@@ -21,7 +21,8 @@ def main():
     args['disease'] = 'input_data/gwas/genome_wide/{study_id}/{trait_id}/{chrom}-{study_id}-{trait_id}.tsv.gz'
     args['eqtl'] = 'input_data/molecular_qtl/eqtl/GTEX7/{tissue}/{biomarker}/{chrom}-GTEX7-{tissue}-{biomarker}.tsv.gz'
     args['pqtl'] = 'input_data/molecular_qtl/pqtl/SUN2018/{tissue}/{biomarker}/{chrom}-SUN2018-{tissue}-{biomarker}.tsv.gz'
-    args['out_pref'] = 'output/coloc_180908/{study_id}/{study_id}-{variant_id}-{source_id}-{tissue}-{biomarker}'
+    args['out_pref'] = 'tmp/coloc_180908/{study_id}/{variant_id}/{source_id}/{tissue}/{biomarker}'
+    # args['out_pref'] = 'output/coloc_180908/{study_id}/{study_id}-{variant_id}-{source_id}-{tissue}-{biomarker}'
     # Coloc args
     args['coloc_window_kb'] = 500
     # Other args
@@ -38,7 +39,10 @@ def main():
 
     # Make commands
     commands = mani.apply(make_commands, axis=1)
-    commands.to_csv(args['tmp_dir'] + '/commands.txt', sep='\t', index=None)
+    commands.to_csv(args['tmp_dir'] + '/commands.txt.gz',
+                    sep='\t',
+                    index=None,
+                    compression='gzip')
     # for command in commands:
     #     print(command)
 
@@ -89,9 +93,9 @@ def make_commands(row):
         sys.exit('Error: source_id {0} not recognised'.format(row.source_id))
 
     # Temp dir
-    out_tmp = os.path.abspath(
-        args['tmp_dir'] + '/coloc_wrapper/{study_id}/'.format(
-            study_id=row.stid))
+    # out_tmp = os.path.abspath(
+    #     args['tmp_dir'] + '/coloc_wrapper/{study_id}/'.format(
+    #         study_id=row.stid))
 
     # Make command
     cmd = [
@@ -102,8 +106,8 @@ def make_commands(row):
         '--bgen', in_bgen,
         '--outpref', outf,
         '--pos', row.pos,
-        '--window_kb', args['coloc_window_kb'],
-        '--tmpdir', out_tmp
+        '--window_kb', args['coloc_window_kb']
+        # '--tmpdir', out_tmp
     ]
 
     return ' '.join([str(x) for x in cmd])
@@ -118,6 +122,15 @@ def load_manifest():
     mani['chrom'], mani['pos'], mani['ref'], mani['alt'] = \
         mani.index_variant_id.str.split('_').str
     mani.chrom = mani.chrom.astype(str)
+
+    # Depulicate
+    mani = mani.drop_duplicates(subset=[
+        'index_variant_id',
+        'stid',
+        'gene_id',
+        'source_id',
+        'feature'
+        ])
 
     # Merge Sun pQTL uniprot
     soma = pd.read_csv(args['in_prot_map'], sep='\t', header=0)

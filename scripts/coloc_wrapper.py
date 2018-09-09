@@ -16,12 +16,19 @@ def main():
     global args
     args = parse_args()
 
+    # Check inputs exist
+    infs = [args.left_sumstats, args.right_sumstats]
+    if args.vloc:
+        infs.append(args.bgen)
+    for inf in infs:
+        assert os.path.exists(inf)
+
     # Make temp and output dirs
-    os.makedirs(args.tmpdir, exist_ok=True)
-    os.makedirs(os.path.dirname(args.outpref), exist_ok=True)
+    # os.makedirs(args.tmpdir, exist_ok=True)
+    os.makedirs(args.outpref, exist_ok=True)
 
     # Start log
-    log_file = '{0}.log.txt'.format(args.outpref)
+    log_file = '{0}/log.txt'.format(args.outpref)
     logging.basicConfig(filename=log_file,
                         format='%(asctime)s: %(message)s',
                         datefmt='%m/%d/%Y %H:%M:%S',
@@ -29,11 +36,6 @@ def main():
                         level=logging.INFO)
     logging.info('Started')
     logging.info(sys.argv)
-
-
-    # Check inputs exist
-    for inf in [args.left_sumstats, args.right_sumstats, args.bgen]:
-        assert os.path.exists(inf)
 
     #
     # Prepare sumstat files ----------------------------------------------------
@@ -84,27 +86,34 @@ def main():
 
     # Write to temp dir
     logging.info('writing files')
-    left_ss.to_csv(args.tmpdir + '/left_ss.tsv', sep='\t', index=None)
-    right_ss.to_csv(args.tmpdir + '/right_ss.tsv', sep='\t', index=None)
+    left_ss.to_csv(args.outpref + '/left_ss.tsv.gz', sep='\t', index=None, compression='gzip')
+    right_ss.to_csv(args.outpref + '/right_ss.tsv.gz', sep='\t', index=None, compression='gzip')
     if args.vloc:
-        cov_mat.to_csv(args.tmpdir + '/ldstore_cov.mat.hm.tsv', sep='\t')
+        cov_mat.to_csv(args.outpref + '/ldstore_cov.mat.hm.tsv', sep='\t')
 
     #
     # Run coloc ----------------------------------------------------------------
     #
 
-    run_coloc(args.tmpdir + '/left_ss.tsv',
-              args.tmpdir + '/right_ss.tsv')
+    logging.info('running coloc')
+    outpref = args.outpref + '/coloc'
+    run_coloc(args.outpref + '/left_ss.tsv.gz',
+              args.outpref + '/right_ss.tsv.gz',
+              outpref)
+
+    # Check output exists
+    assert os.path.exists(outpref + '.pp.tsv')
+
+    # Touch COMPLETE
+    touch(args.outpref + '/COMPLETE')
 
     logging.info('Finished!')
 
     return 0
 
-def run_coloc(left_ss_path, right_ss_path):
+def run_coloc(left_ss_path, right_ss_path, outpref):
     ''' Runs coloc.abf
     '''
-
-    outpref = args.tmpdir + '/coloc'
 
     # Make command
     cmd = [
@@ -131,7 +140,7 @@ def create_covariance_matrix(bgen, pos, window):
     range = '{}-{}'.format(pos - window * 1000, pos + window * 1000)
 
     # Create ldstore command
-    outpref = args.tmpdir + '/ldstore_cov'
+    outpref = args.outpref + '/ldstore_cov'
     cmd = [
         # Make bcor and merge
         'ldstore',
@@ -225,7 +234,7 @@ def parse_args():
     parser.add_argument('--bgen', metavar="<file>", help=('BGEN input file'), type=str, required=True)
     # Output args
     parser.add_argument('--outpref', metavar="<str>", help=("Output prefix"), type=str, required=True)
-    parser.add_argument('--tmpdir', metavar="<str>", help=("Temporary dir"), type=str, required=True)
+    # parser.add_argument('--tmpdir', metavar="<str>", help=("Temporary dir"), type=str, required=True)
     # Coloc args
     parser.add_argument('--pos', metavar="<int>", help=('Genomic position of index variant'), type=int, required=True)
     parser.add_argument('--window_kb', metavar="<int>", help=('Plus/minus window (kb) to perform coloc on'), type=int, required=True)
@@ -236,6 +245,9 @@ def parse_args():
 
     return args
 
+def touch(fname, times=None):
+    with open(fname, 'a'):
+        os.utime(fname, times)
 
 if __name__ == '__main__':
 
