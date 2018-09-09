@@ -26,8 +26,8 @@ right_ss$side = 'right'
 # Make coloc dataset (left)
 left_n = left_ss[1, 'n_samples_variant_level']
 left_ncases = left_ss[1, 'n_cases_study_level']
+left_ncases = min(left_ncases, (left_n - left_ncases))
 left_prop = left_ncases / left_n
-print(c(left_ncases, left_n, left_prop))
 left_type = ifelse(as.character(left_ss[1, 'is_cc']) == 'True', 'cc', 'quant')
 left_data = list(
                  pvalues=left_ss$pval,

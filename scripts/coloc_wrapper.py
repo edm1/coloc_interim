@@ -104,7 +104,7 @@ def main():
               outpref)
 
     # Check output exists
-    outf = outpref + '.ppig.tsv'
+    outf = outpref + '.pp.tsv'
     if not os.path.exists(outf):
         logging.info('Output file not found: {0}'.format(outf))
         sys.exit()
