@@ -128,6 +128,7 @@ def load_manifest():
     # Merge Sun pQTL uniprot
     soma = pd.read_csv(args['in_prot_map'], sep='\t', header=0)
     soma = soma.drop_duplicates(subset='ensembl_id')
+    soma.UniProt = 'UNIPROT_' + soma.UniProt.str.replace(',', '_')
     mani = pd.merge(mani, soma.loc[:, ['ensembl_id', 'UniProt']],
                     left_on='gene_id', right_on='ensembl_id',
                     how='left')

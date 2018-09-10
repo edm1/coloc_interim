@@ -92,7 +92,7 @@ def load_gene_map(inf):
         in_h.readline() # Skip header
         for line in in_h:
             parts = line.rstrip().split('\t')
-            uniprot = parts[1]
+            uniprot = 'UNIPROT_' + parts[1].replace(',', '_')
             try:
                 ensg = parts[5]
                 d[uniprot] = ensg
