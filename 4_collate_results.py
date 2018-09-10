@@ -55,7 +55,7 @@ def main():
 
             # Insert tissue name and gene ID
             info.insert(4, tissue_map[info[3]])
-            info.insert(6, gene_map.get(info[3], info[3]))
+            info.insert(6, gene_map.get(info[5], info[5]))
 
             # Get results
             results = parse_results(inf)
