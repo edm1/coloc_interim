@@ -43,7 +43,7 @@ def main():
                 study_id=row['study_id'],
                 variant_id=row['variant_id'],
                 source_id=row['source_id'],
-                tissue=row['tissue'],
+                tissue=row['tissue_code'],
                 biomarker=row['biomarker']
             )
             out_plot = out_pattern.format(
@@ -51,7 +51,7 @@ def main():
                 study_id=row['study_id'],
                 variant_id=row['variant_id'],
                 source_id=row['source_id'],
-                tissue=row['tissue'],
+                tissue=row['tissue_code'],
                 biomarker=row['biomarker']
             )
 
