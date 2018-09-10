@@ -122,7 +122,7 @@ def parse_results(inf):
         except ZeroDivisionError:
             h4_over_h3_log = np.log(h4 / sys.float_info.min)
 
-    return [nvars, h0, h1, h2, h3, h4, h4_over_h3]
+    return [nvars, h0, h1, h2, h3, h4, h4_over_h3_log]
 
 def parse_info_from_path(inf):
     ''' Parses {study_id}/{variant_id}/{source_id}/{tissue}/{biomarker} from
