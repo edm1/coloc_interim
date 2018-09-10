@@ -44,7 +44,7 @@ def main():
             'pp_h2',
             'pp_h3',
             'pp_h4',
-            'pp_h4_over_h3',
+            'pp_h4_over_h3_log2',
         ]
         out_h.write('\t'.join(header) + '\n')
 
@@ -118,9 +118,9 @@ def parse_results(inf):
         h4 = float(in_h.readline().rstrip().split('\t')[1])
 
         try:
-            h4_over_h3_log = np.log(h4 / h3)
+            h4_over_h3_log = np.log2(h4 / h3)
         except ZeroDivisionError:
-            h4_over_h3_log = np.log(h4 / sys.float_info.min)
+            h4_over_h3_log = np.log2(h4 / sys.float_info.min)
 
     return [nvars, h0, h1, h2, h3, h4, h4_over_h3_log]
 
