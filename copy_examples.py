@@ -36,7 +36,7 @@ def main():
         df_sort = df_sort.head(n_plots)
 
         # Make
-        for row in df_sort.iterrows():
+        for i, row in df_sort.iterrows():
 
             # Make file names
             in_plot = plot_pattern.format(
