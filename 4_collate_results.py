@@ -8,6 +8,7 @@ import pandas as pd
 from glob import glob
 import gzip
 import pandas as pd
+import numpy as np
 
 def main():
 
@@ -115,7 +116,12 @@ def parse_results(inf):
         h2 = float(in_h.readline().rstrip().split('\t')[1])
         h3 = float(in_h.readline().rstrip().split('\t')[1])
         h4 = float(in_h.readline().rstrip().split('\t')[1])
-        h4_over_h3 = h4 / h3
+
+        try:
+            h4_over_h3_log = np.log(h4 / h3)
+        except ZeroDivisionError:
+            h4_over_h3_log = np.log(h4 / sys.float_info.min)
+
     return [nvars, h0, h1, h2, h3, h4, h4_over_h3]
 
 def parse_info_from_path(inf):
