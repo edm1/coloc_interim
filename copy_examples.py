@@ -15,7 +15,7 @@ def main():
     out_pattern = 'output/examples/{h}/{study_id}-{variant_id}-{source_id}-{tissue}-{biomarker}-coloc.plot.png'
     outdir = 'output/examples'
     hs = ['h{}'.format(x) for x in [0, 1, 2, 3, 4]]
-    n_plots = 10
+    n_plots = 100
 
     # Make out dirs
     for h in hs:
