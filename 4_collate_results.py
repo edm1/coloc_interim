@@ -7,6 +7,7 @@ import os
 import pandas as pd
 from glob import glob
 import gzip
+import pandas as pd
 
 def main():
 
@@ -14,7 +15,13 @@ def main():
     global args
     args = {}
     args['in_pattern'] = 'tmp/coloc_180908/*/*/*/*/*/coloc.pp.tsv'
+    args['tissue_map'] = 'configs/tissue_codes.tsv'
+    args['biomarker_map'] = 'configs/Sun_pQTL_SOMALOGIC_GWAS_protein_info.ensembl.manifest.tsv'
     args['outf'] = 'output/coloc_interim_180908.tsv.gz'
+
+    # Load maps
+    tissue_map = load_tissue_map(args['tissue_map'])
+    gene_map = load_gene_map(args['biomarker_map'])
 
     # Make output dir
     if not os.path.exists('output'): os.mkdir('output')
@@ -26,8 +33,10 @@ def main():
             'study_id',
             'variant_id',
             'source_id',
-            'tissue',
+            'tissue_code',
+            'tissue_name',
             'biomarker',
+            'biomarker_gene',
             'n_variants',
             'pp_h0',
             'pp_h1',
@@ -44,11 +53,53 @@ def main():
             # Get experiment info
             info = parse_info_from_path(inf)
 
+            # Insert tissue name and gene ID
+            info.insert(4, tissue_map[info[3]])
+            info.insert(6, gene_map.get(info[3], info[3]))
+
             # Get results
             results = parse_results(inf)
 
             # Write result
             out_h.write('\t'.join([str(x) for x in info + results]) + '\n')
+
+
+def load_tissue_map(inf):
+    ''' Loads a tissue code -> tissue name map
+    Args:
+        inf (file): input file
+    Returns:
+        Dict
+    '''
+    d = {}
+    with open(inf, 'r') as in_h:
+        in_h.readline() # Skip header
+        for line in in_h:
+            tissue_name, _, tissue_code = line.rstrip().split('\t')
+            d[tissue_code] = tissue_name.lower()
+    return d
+
+def load_gene_map(inf):
+    ''' Loads a biomarker -> ensembl gene id map. This is currently only
+        needed for uniprot IDs from Sun et al.
+    Args:
+        inf (file): input file
+    Returns:
+        Dict
+    '''
+    d = {}
+    with open(inf, 'r') as in_h:
+        in_h.readline() # Skip header
+        for line in in_h:
+            parts = line.rstrip().split('\t')
+            print(parts)
+            uniprot = parts[1]
+            try:
+                ensg = parts[5]
+                d[uniprot] = ensg
+            except IndexError:
+                pass
+    return d
 
 def parse_results(inf):
     ''' Parses coloc results
@@ -59,7 +110,7 @@ def parse_results(inf):
     '''
     with open(inf, 'r') as in_h:
         in_h.readline()
-        nvars = int(in_h.readline().rstrip().split('\t')[1])
+        nvars = int(float(in_h.readline().rstrip().split('\t')[1]))
         h0 = float(in_h.readline().rstrip().split('\t')[1])
         h1 = float(in_h.readline().rstrip().split('\t')[1])
         h2 = float(in_h.readline().rstrip().split('\t')[1])
