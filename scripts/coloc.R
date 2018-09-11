@@ -38,13 +38,14 @@ left_data = list(
                  type=left_type,
                  s=left_prop)
 
-# Make coloc dataset (right)
+# Make coloc dataset (right). Use left_ss's maf if right has no maf
 right_n = right_ss[1, 'n_samples_study_level'] * 10
 right_type = 'quant'
+right_maf = ifelse(!is.na(right_ss$maf), right_ss$maf, left_ss$maf)
 right_data = list(
                  pvalues=right_ss$pval,
                  N=right_n,
-                 MAF=right_ss$maf,
+                 MAF=right_maf
                  #beta=right_ss$beta,
                  #varbeta=((right_ss$se)^2)*right_n,
                  type=right_type)
