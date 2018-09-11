@@ -18,7 +18,7 @@ def main():
     args['in_pattern'] = 'tmp/coloc_180908/*/*/*/*/*/coloc.pp.tsv'
     args['tissue_map'] = 'configs/tissue_codes.tsv'
     args['biomarker_map'] = 'configs/Sun_pQTL_SOMALOGIC_GWAS_protein_info.ensembl.manifest.tsv'
-    args['outf'] = 'output/coloc_interim_180908.tsv.gz'
+    args['outf'] = 'output/coloc_interim.full.tsv.gz'
 
     # Load maps
     tissue_map = load_tissue_map(args['tissue_map'])
