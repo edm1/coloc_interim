@@ -34,6 +34,9 @@ def main():
         # Sort
         df_sort = df.sort_values(score_col, ascending=False)
 
+        # Deduplicate by gene id
+        df_sort = df_sort.drop_duplicates(subset='biomarker')
+
         # Take top N
         df_sort = df_sort.head(n_plots)
 
