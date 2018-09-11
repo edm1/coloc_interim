@@ -9,8 +9,8 @@ Interim solution for colocalisation
 # Execute workflow (locally)
 bash master
 
-# Copy to gcs
-gsutil -m rsync -rn output gs://genetics-portal-raw/coloc_interim_results/180911
+# Copy to gcs (dry-run)
+gsutil -m rsync -rn output gs://genetics-portal-staging/coloc_interim/180911
 
 ```
 

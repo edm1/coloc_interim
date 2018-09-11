@@ -12,8 +12,8 @@ def main():
     # Args
     inf = 'output/coloc_interim_180908.tsv.gz'
     plot_pattern = 'tmp/coloc_180908/{study_id}/{variant_id}/{source_id}/{tissue}/{biomarker}/coloc.plot.png'
-    out_pattern = 'output/examples/{h}/{score}-{study_id}-{variant_id}-{source_id}-{tissue}-{biomarker}-coloc.plot.png'
-    outdir = 'output/examples'
+    out_pattern = 'output/example_plots/{h}/{score}-{study_id}-{variant_id}-{source_id}-{tissue}-{biomarker}-coloc.plot.png'
+    outdir = 'output/example_plots'
     hs = ['h{}'.format(x) for x in [0, 1, 2, 3, 4]]
     n_plots = 100
 
